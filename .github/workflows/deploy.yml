@@ -39,12 +39,10 @@ jobs:
           VITE_BASE: /${{ github.event.repository.name }}/
         run: npm run build
 
-      - name: Pages einrichten
-        # Schaltet Pages beim ersten Lauf selbst ein. Klappt nur bei
-        # öffentlichen Repositories; sonst: Settings → Pages → GitHub Actions.
-        uses: actions/configure-pages@v5
-        with:
-          enablement: true
+      # Pages muss einmalig von Hand eingeschaltet werden:
+      # Settings → Pages → Source: GitHub Actions. Das Workflow-Token darf
+      # die Seite nicht selbst anlegen, unabhängig von der Sichtbarkeit.
+      - uses: actions/configure-pages@v5
 
       - uses: actions/upload-pages-artifact@v3
         with:

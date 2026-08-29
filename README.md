@@ -35,10 +35,11 @@ GitHub Pages bereit (`.github/workflows/deploy.yml`). Die Vite-`base` setzt der
 Workflow auf den Repository-Pfad, damit Service Worker und Manifest ihre Dateien
 finden.
 
-Beim ersten Lauf schaltet der Workflow GitHub Pages selbst ein. Das gelingt nur
-bei öffentlichen Repositories — bei privaten verlangt GitHub dafür mindestens
-den Pro-Plan, und die Einstellung muss dann von Hand gesetzt werden:
-Repository → *Settings* → *Pages* → Quelle **GitHub Actions**.
+**Einmalig nötig:** Repository → *Settings* → *Pages* → als Quelle
+**GitHub Actions** wählen. Der Workflow kann das nicht selbst erledigen; sein
+Token darf die Seite nicht anlegen. Danach genügt ein Push.
+
+Die Adresse lautet `https://<konto>.github.io/<repository>/`.
 
 Die Adresse lautet danach `https://<konto>.github.io/<repository>/`.
 
