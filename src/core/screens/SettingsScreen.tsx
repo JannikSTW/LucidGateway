@@ -1,4 +1,5 @@
 import { useRef, useState } from 'react'
+import { useLiveQuery } from 'dexie-react-hooks'
 import { useNavigate } from 'react-router-dom'
 import { Button, Card, Text } from '../ui/basics'
 import { ModeSwitch } from '../ui/inputs'
@@ -10,9 +11,27 @@ import { downloadBackup, importBackup } from '../db/backup'
 import { allTools } from '../modules/registry'
 import { useTheme, type ThemeName } from '../app/ThemeProvider'
 
+/** Werkzeugzeile eines Moduls — der Hinweistext darf aus der Datenbank kommen. */
+function ToolRow({ id }: { id: string }) {
+  const tool = allTools().find((t) => t.id === id)
+  const navigate = useNavigate()
+  const hint = useLiveQuery(async () => (tool?.hint ? await tool.hint() : ''), [id], '')
+  if (!tool) return null
+  return (
+    <Row
+      icon={tool.icon}
+      tint={tool.tint}
+      fg={tool.fg}
+      title={tool.label}
+      sub={hint}
+      right={<Chevron />}
+      onClick={() => navigate(tool.to)}
+    />
+  )
+}
+
 export function SettingsScreen() {
   const [theme, setTheme] = useTheme()
-  const navigate = useNavigate()
   const toast = useToast()
   const dialog = useDialog()
   const fileInput = useRef<HTMLInputElement>(null)
@@ -74,16 +93,7 @@ export function SettingsScreen() {
         {allTools().length > 0 && (
           <Card rows>
             {allTools().map((t) => (
-              <Row
-                key={t.id}
-                icon={t.icon}
-                tint={t.tint}
-                fg={t.fg}
-                title={t.label}
-                sub="Werkzeug"
-                right={<Chevron />}
-                onClick={() => navigate(t.to)}
-              />
+              <ToolRow key={t.id} id={t.id} />
             ))}
           </Card>
         )}

@@ -39,6 +39,8 @@ export function EntryRow({ entry, chevron = false }: { entry: Entry; chevron?: b
               {entry.med.dur ? `${entry.med.dur} Min` : '—'}
             </Pill>
           ) : (
+            // Ohne Skala in der Kategorie gibt es auch nichts anzuzeigen.
+            cat.journal?.showScale !== false &&
             cat.journal && <Pill>{`${cat.journal.scale.label.slice(0, 1)}${entry.scale}`}</Pill>
           )}
           {chevron && <Chevron />}
