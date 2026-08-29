@@ -1,0 +1,143 @@
+/* ============================================================
+   Design-Tokens — die einzige Stelle, an der Farben und Maße
+   als Literale stehen. Komponenten benutzen ausschließlich var().
+   ============================================================ */
+
+:root {
+  /* --- Flächen & Text (Dark Mode ist der Standard) --- */
+  --ink: #0c1018;
+  --backdrop: #07090e;
+  --panel: #141a28;
+  --panel2: #1a2133;
+  --line: #242d42;
+  --line-strong: #33405f;
+  --paper: #edeef3;
+  --mist: #8b93a7;
+  --placeholder: #5b6478;
+
+  /* --- Akzente --- */
+  --violet: #8b7cf6;
+  --violet-soft: rgba(139, 124, 246, 0.14);
+  --violet-fg: #cdc5fb;
+  --teal: #5ec9b4;
+  --teal-fg: #8adcc9;
+  --rose: #e08bb8;
+  --rose-fg: #f0afd0;
+  --sky: #6fa8f5;
+  --sky-fg: #9cc3f8;
+  --amber: #f0a75a;
+  --amber-fg: #f3be85;
+  --red: #e5544b;
+  --red-fg: #ff9088;
+  --ok: #77c98d;
+  --ok-fg: #93d9a6;
+
+  /* --- Kategoriefarben (FEATURES §1) --- */
+  --cat-ld: var(--violet);
+  --cat-ld-tint: rgba(139, 124, 246, 0.16);
+  --cat-ld-fg: var(--violet-fg);
+  --cat-ms: var(--amber);
+  --cat-ms-tint: rgba(240, 167, 90, 0.14);
+  --cat-ms-fg: var(--amber-fg);
+  --cat-ai: var(--rose);
+  --cat-ai-tint: rgba(224, 139, 184, 0.14);
+  --cat-ai-fg: var(--rose-fg);
+  --cat-mmm: var(--red);
+  --cat-mmm-tint: rgba(229, 84, 75, 0.16);
+  --cat-mmm-fg: var(--red-fg);
+  --cat-obe: var(--teal);
+  --cat-obe-tint: rgba(94, 201, 180, 0.14);
+  --cat-obe-fg: var(--teal-fg);
+
+  /* --- Sonderfarben --- */
+  --anchor: #e8734a;          /* Stützpunkt auf der Traumwelt-Karte */
+  --chalk: #edede6;           /* Dream Adventures */
+  --chalk-dim: #9a9a93;
+  --chalk-bg: #0a0c10;
+  --chalk-yellow: #e8d44d;
+  --chalk-green: #5fd48a;
+
+  /* --- Register-/Kartenfarben --- */
+  --reg-ort: var(--amber-fg);
+  --reg-person: var(--violet-fg);
+  --reg-zeichen: var(--teal-fg);
+
+  /* --- Protokoll-Farbcodierung (gedämpft) --- */
+  --talk: #7fa894;
+  --train: #b08078;
+  --end: #ac9a6b;
+
+  /* --- Abstände --- */
+  --sp-1: 4px;
+  --sp-2: 6px;
+  --sp-3: 8px;
+  --sp-4: 10px;
+  --sp-5: 12px;
+  --sp-6: 14px;
+  --sp-7: 16px;
+  --sp-8: 18px;
+  --sp-9: 22px;
+  --sp-10: 26px;
+  --gutter: 18px;
+  --nav-space: 118px;
+
+  /* --- Radien --- */
+  --r-sm: 9px;
+  --r-md: 12px;
+  --r-lg: 16px;
+  --r-xl: 18px;
+  --r-pill: 999px;
+
+  /* --- Typografie --- */
+  --font-ui: -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-display: Georgia, 'Times New Roman', serif;
+  --font-hand: 'Segoe Print', 'Bradley Hand', 'Chalkduster', 'Comic Sans MS', cursive;
+
+  /* --- Der aktive Bereichston. Bereiche überschreiben nur diese drei. --- */
+  --zone: var(--violet);
+  --zone-soft: var(--violet-soft);
+  --zone-fg: var(--violet-fg);
+  --zone-on: #ffffff;
+  --zone-glow: radial-gradient(circle at 50% 0%, transparent 0%, var(--ink) 55%);
+}
+
+/* ================= LIGHT MODE ================= */
+/* Kräftigere, dunklere Akzente, warmer Hintergrund. */
+:root[data-theme='light'] {
+  --ink: #fbfaf7;
+  --backdrop: #dfdad0;
+  --panel: #ffffff;
+  --panel2: #f2efe9;
+  --line: #d9d3c7;
+  --line-strong: #beb6a7;
+  --paper: #12151b;
+  --mist: #5a6270;
+  --placeholder: #8a8172;
+
+  --violet: #5b45e0;
+  --violet-soft: rgba(91, 69, 224, 0.14);
+  --violet-fg: #3e2fb5;
+  --teal: #0e8f73;
+  --teal-fg: #0a6b57;
+  --rose: #c42f7e;
+  --rose-fg: #9c1f61;
+  --sky: #1f6fc4;
+  --sky-fg: #14528f;
+  --amber: #c2660a;
+  --amber-fg: #8f4b06;
+  --red: #d02a1e;
+  --red-fg: #a8221a;
+  --ok: #1f8f45;
+  --ok-fg: #166b34;
+
+  --cat-ld-tint: rgba(91, 69, 224, 0.13);
+  --cat-ms-tint: rgba(194, 102, 10, 0.15);
+  --cat-ai-tint: rgba(196, 47, 126, 0.13);
+  --cat-mmm-tint: rgba(208, 42, 30, 0.14);
+  --cat-obe-tint: rgba(14, 143, 115, 0.14);
+
+  --anchor: #b8531f;
+  --talk: #0b7a4f;
+  --train: #c1281b;
+  --end: #9a6a00;
+}
