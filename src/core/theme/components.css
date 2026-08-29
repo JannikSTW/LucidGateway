@@ -1452,3 +1452,58 @@ details.fold .inner {
   margin-bottom: var(--sp-2);
   padding: 0 var(--sp-1);
 }
+
+/* ---------- Sitzungsprotokoll: gedämpfte Farbcodierung ---------- */
+.f-talk > label {
+  color: var(--talk);
+}
+.f-train > label {
+  color: var(--train);
+}
+.f-end > label {
+  color: var(--end);
+}
+.f-talk input,
+.f-talk textarea,
+.f-train input,
+.f-train textarea,
+.f-end input,
+.f-end textarea {
+  border-color: color-mix(in srgb, var(--section, var(--line)) 34%, transparent);
+}
+.f-talk input:focus,
+.f-talk textarea:focus,
+.f-train input:focus,
+.f-train textarea:focus,
+.f-end input:focus,
+.f-end textarea:focus {
+  border-color: var(--section);
+}
+.f-talk {
+  --section: var(--talk);
+}
+.f-train {
+  --section: var(--train);
+}
+.f-end {
+  --section: var(--end);
+}
+.f-talk .chip.on {
+  background: color-mix(in srgb, var(--talk) 13%, transparent);
+  border-color: var(--talk);
+  color: var(--talk);
+}
+.f-train .chip.on {
+  background: color-mix(in srgb, var(--train) 14%, transparent);
+  border-color: var(--train);
+  color: var(--train);
+}
+.eb-talk {
+  color: var(--talk) !important;
+}
+.eb-train {
+  color: var(--train) !important;
+}
+.eb-end {
+  color: var(--end) !important;
+}
