@@ -114,6 +114,6 @@ Prototyp bereits formuliert und sollten übernommen werden.
 - [x] Phase 7 — Projekt: Umfeld, Termine, Klienten — 29.08.2026
 - [x] Phase 8 — Ziele, Gedankenspeicher — 29.08.2026
 - [x] Phase 9 — Reality Checks mit Push (gerätelokal, ohne Server) — 29.08.2026
-- [ ] Phase 10 — Dream Adventures
+- [x] Phase 10 — Dream Adventures — 29.08.2026
 
 *(Nach jeder Phase abhaken und Datum notieren.)*

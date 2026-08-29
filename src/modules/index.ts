@@ -1,3 +1,4 @@
+import { registerAdventuresModule } from './adventures/index'
 import { registerDreamModule } from './dream/index'
 import { registerInnerModule } from './inner/index'
 import { registerMindSparkModule } from './mindspark/index'
@@ -13,6 +14,7 @@ import { registerTrainingModule } from './training/index'
 export function registerAllModules(): void {
   registerDreamModule()
   registerObeModule()
+  registerAdventuresModule()
   registerInnerModule()
   registerMindSparkModule()
   registerTrainingModule()

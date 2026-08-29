@@ -1,7 +1,8 @@
 import { useLiveQuery } from 'dexie-react-hooks'
 import { StatBox, StatLine, Tile, TileGrid } from '../../../core/ui/tiles'
 import { listEntries } from '../../../core/db/entries'
-import { IconDream, IconObe, IconRegisters } from '../icons'
+import { IconDream, IconGate, IconObe, IconRegisters } from '../icons'
+import { IconEye } from '../../../core/ui/icons'
 import type { Entry } from '../../../core/types'
 
 /** Statistik und Kacheln des Bereichs „Luzides Träumen“. */
@@ -42,6 +43,22 @@ export function DreamExtra() {
           tint="var(--cat-ld-tint)"
           fg="var(--cat-ld-fg)"
           to="/traumwelt"
+        />
+        <Tile
+          icon={<IconEye />}
+          label="Reality Checks"
+          hint="Erinnerungen"
+          tint="var(--cat-ld-tint)"
+          fg="var(--cat-ld-fg)"
+          to="/reality-checks"
+        />
+        <Tile
+          icon={<IconGate />}
+          label="Dream Adventures"
+          hint="Skill-Tree 2024"
+          tint="rgba(95, 212, 138, 0.14)"
+          fg="var(--chalk-green)"
+          to="/adventures"
         />
       </TileGrid>
     </>
