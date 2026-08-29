@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useNavigate, useParams, useSearchParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { Button, Card, Empty, Text } from '../../../core/ui/basics'
 import { Field, NumberPair, TextArea, TextInput } from '../../../core/ui/inputs'
 import { Screen, ScreenHeader, Scroll } from '../../../core/ui/layout'
@@ -10,16 +10,16 @@ import { DISCIPLINES, lastFor, templates, trainings, useTrainings } from '../db'
 import type { DoneExercise } from '../types'
 
 /** Beim Durchführen wird die Vorlage kopiert — spätere Änderungen wirken nicht rückwirkend. */
-export function WorkoutScreen() {
+export function WorkoutScreen({ editId }: { editId?: number }) {
   const { key } = useParams()
-  const [params] = useSearchParams()
   const navigate = useNavigate()
   const dialog = useDialog()
   const toast = useToast()
   const history = useTrainings() ?? []
   const d = DISCIPLINES.kraft
 
-  const [name, setName] = useState(params.get('name') ?? 'Freies Training')
+  const existing = editId !== undefined ? history.find((t) => t.id === editId) : undefined
+  const [name, setName] = useState('Freies Training')
   const [ex, setEx] = useState<DoneExercise[]>([])
   const [ready, setReady] = useState(false)
   const [dur, setDur] = useState('')
@@ -29,6 +29,17 @@ export function WorkoutScreen() {
   useEffect(() => {
     let alive = true
     const load = async () => {
+      if (editId !== undefined) {
+        if (!existing) return
+        if (!alive) return
+        setName(existing.focus)
+        setEx((existing.ex ?? []).map((e) => ({ ...e })))
+        setDur(existing.dur === null ? '' : String(existing.dur))
+        setRpe(existing.rpe === null ? '' : String(existing.rpe))
+        setFeel(existing.feel)
+        setReady(true)
+        return
+      }
       if (!key || key === 'frei') {
         if (alive) {
           setName('Freies Training')
@@ -47,7 +58,7 @@ export function WorkoutScreen() {
     return () => {
       alive = false
     }
-  }, [key])
+  }, [key, editId, existing])
 
   const patch = (i: number, p: Partial<DoneExercise>) =>
     setEx((list) => list.map((e, idx) => (idx === i ? { ...e, ...p } : e)))
@@ -63,6 +74,26 @@ export function WorkoutScreen() {
     const now = new Date()
     const kept = ex.filter((e) => !e.skip)
     const done = kept.filter((e) => e.done)
+    const detail = done
+      .map((e) => {
+        if (e.t === 'load') return `${e.n} ${e.kg || ''} kg × ${e.reps || ''}`.replace(/\s+/g, ' ').trim()
+        if (e.t === 'time') return `${e.n} ${e.reps || ''} s${e.kg ? ` +${e.kg} kg` : ''}`.trim()
+        return `${e.n} ${e.reps || ''} Wdh${e.kg ? ` +${e.kg} kg` : ''}`.trim()
+      })
+      .join('\n')
+    if (existing) {
+      await trainings().update(existing.id!, {
+        focus: name,
+        dur: dur ? Number(dur) : null,
+        rpe: rpe ? Number(rpe) : null,
+        ex: kept,
+        detail,
+        feel: feel.trim(),
+      })
+      toast('Aktualisiert')
+      navigate(`/training/einheit/${existing.id}`)
+      return
+    }
     await trainings().add({
       disc: 'kraft',
       venue: null,
@@ -71,13 +102,7 @@ export function WorkoutScreen() {
       dur: dur ? Number(dur) : null,
       rpe: rpe ? Number(rpe) : null,
       ex: kept,
-      detail: done
-        .map((e) => {
-          if (e.t === 'load') return `${e.n} ${e.kg || ''} kg × ${e.reps || ''}`.replace(/\s+/g, ' ').trim()
-          if (e.t === 'time') return `${e.n} ${e.reps || ''} s${e.kg ? ` +${e.kg} kg` : ''}`.trim()
-          return `${e.n} ${e.reps || ''} Wdh${e.kg ? ` +${e.kg} kg` : ''}`.trim()
-        })
-        .join('\n'),
+      detail,
       feel: feel.trim(),
       iso: isoOf(now),
       date: dayLabel(now),
@@ -97,12 +122,13 @@ export function WorkoutScreen() {
         icon={d.icon}
         tint={d.tint}
         fg={d.color}
-        back="/training/kraft/start"
+        back={existing ? `/training/einheit/${existing.id}` : '/training/kraft/start'}
       />
       <Scroll tight>
         <Text small style={{ marginBottom: 'var(--sp-7)' }}>
-          Kopie der Vorlage — Änderungen hier wirken sich nicht auf die Vorlage aus. Übungen kannst du
-          überspringen oder ergänzen.
+          {existing
+            ? 'Diese Einheit ist eine Kopie der Vorlage von damals — Änderungen hier bleiben bei ihr.'
+            : 'Kopie der Vorlage — Änderungen hier wirken sich nicht auf die Vorlage aus. Übungen kannst du überspringen oder ergänzen.'}
         </Text>
 
         <Card rows>
@@ -184,7 +210,7 @@ export function WorkoutScreen() {
         <Field label="Wie war's?">
           <TextArea value={feel} onChange={setFeel} rows={3} placeholder="Energie, Technik, Kopf …" />
         </Field>
-        <Button onClick={() => void save()}>Einheit sichern</Button>
+        <Button onClick={() => void save()}>{existing ? 'Änderungen sichern' : 'Einheit sichern'}</Button>
       </Scroll>
     </Screen>
   )

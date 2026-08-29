@@ -1,6 +1,6 @@
 import { useLiveQuery } from 'dexie-react-hooks'
 import { table } from '../../core/db/db'
-import { listEntries } from '../../core/db/entries'
+import { entriesTable, listEntries } from '../../core/db/entries'
 import { getSetting, setSetting } from '../../core/db/settings'
 import type { Entry } from '../../core/types'
 import type { DreamLink, RcCheck, RegItem, RegisterKey, Verbindung } from './types'
@@ -41,6 +41,47 @@ export async function addRegItem(register: RegisterKey, name: string): Promise<b
   const existing = await regItems().where('register').equals(register).toArray()
   if (existing.some((x) => x.name.toLowerCase() === trimmed.toLowerCase())) return false
   await regItems().add({ register, name: trimmed, note: '' })
+  return true
+}
+
+/**
+ * Umbenennen zieht durch alle Stellen, an denen der Name steht: Einträge,
+ * Verknüpfungen, Thesen und der Stützpunkt. Der Name ist die Identität.
+ */
+export async function renameRegItem(item: RegItem, name: string): Promise<boolean> {
+  const trimmed = name.trim()
+  if (!trimmed || trimmed === item.name) return false
+  const all = await regItems().where('register').equals(item.register).toArray()
+  if (all.some((x) => x.id !== item.id && x.name.toLowerCase() === trimmed.toLowerCase())) return false
+
+  await regItems().update(item.id!, { name: trimmed })
+
+  const entries = await entriesTable().toArray()
+  for (const e of entries) {
+    const names = e.els?.[item.register]
+    if (!names?.includes(item.name)) continue
+    await entriesTable().update(e.id!, {
+      els: { ...e.els, [item.register]: names.map((n) => (n === item.name ? trimmed : n)) },
+    })
+  }
+
+  const links = await dreamLinks().toArray()
+  for (const l of links) {
+    if (l.a.name !== item.name && l.b.name !== item.name) continue
+    await dreamLinks().update(l.id!, {
+      a: l.a.name === item.name ? { ...l.a, name: trimmed } : l.a,
+      b: l.b.name === item.name ? { ...l.b, name: trimmed } : l.b,
+    })
+  }
+
+  const theses = await verbindungen().toArray()
+  for (const v of theses) {
+    if (!v.refs.includes(item.name)) continue
+    await verbindungen().update(v.id!, { refs: v.refs.map((r) => (r === item.name ? trimmed : r)) })
+  }
+
+  const anchor = await getAnchor()
+  if (anchor?.name === item.name) await setAnchor({ ...anchor, name: trimmed })
   return true
 }
 

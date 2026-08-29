@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
 import { Button, Card, Empty } from '../../../core/ui/basics'
 import { Chip, Field, NumberPair, TextArea, TextInput } from '../../../core/ui/inputs'
 import { Eyebrow, Screen, ScreenHeader, Scroll } from '../../../core/ui/layout'
@@ -12,7 +12,17 @@ import type { Termin, TerminKind } from '../types'
 
 const KINDS: TerminKind[] = ['Einzelsession', 'Erstgespräch', 'Orga', 'Sonstiges']
 
-function TerminRow({ t, onToggle, onDelete }: { t: Termin; onToggle: () => void; onDelete: () => void }) {
+function TerminRow({
+  t,
+  onToggle,
+  onDelete,
+  onOpen,
+}: {
+  t: Termin
+  onToggle: () => void
+  onDelete: () => void
+  onOpen: () => void
+}) {
   const d = t.date ? fromIso(t.date) : null
   return (
     <div className={`termin${t.done ? ' past' : ''}`}>
@@ -20,7 +30,14 @@ function TerminRow({ t, onToggle, onDelete }: { t: Termin; onToggle: () => void;
         <b>{d ? d.toLocaleDateString('de-DE', { month: 'short' }).toUpperCase() : '—'}</b>
         <span>{d ? d.getDate() : '?'}</span>
       </div>
-      <div className="ti2">
+      <div
+        className="ti2"
+        role="button"
+        tabIndex={0}
+        style={{ cursor: 'pointer' }}
+        onClick={onOpen}
+        onKeyDown={(e) => e.key === 'Enter' && onOpen()}
+      >
         <b>{t.title}</b>
         <span>
           {t.kind}
@@ -80,6 +97,7 @@ export function TermineScreen() {
                 t={t}
                 onToggle={() => void termine().update(t.id!, { done: true })}
                 onDelete={() => void remove(t)}
+                onOpen={() => navigate(`/projekt/termine/${t.id}/bearbeiten`)}
               />
             ))
           ) : (
@@ -96,6 +114,7 @@ export function TermineScreen() {
                 t={t}
                 onToggle={() => void termine().update(t.id!, { done: false })}
                 onDelete={() => void remove(t)}
+                onOpen={() => navigate(`/projekt/termine/${t.id}/bearbeiten`)}
               />
             ))
           ) : (
@@ -108,6 +127,10 @@ export function TermineScreen() {
 }
 
 export function TerminFormScreen() {
+  const { id } = useParams()
+  const editId = id ? Number(id) : undefined
+  const list = useTermine()
+  const existing = editId !== undefined ? list?.find((t) => t.id === editId) : undefined
   const navigate = useNavigate()
   const toast = useToast()
   const clients = useClients() ?? []
@@ -119,20 +142,41 @@ export function TerminFormScreen() {
   const [date, setDate] = useState('')
   const [time, setTime] = useState('')
   const [note, setNote] = useState('')
+  const [loaded, setLoaded] = useState(editId === undefined)
+
+  useEffect(() => {
+    if (loaded || !existing) return
+    setKind(existing.kind)
+    setTitle(existing.title)
+    setCid(existing.cid)
+    setNid(existing.nid)
+    setDate(existing.date)
+    setTime(existing.time)
+    setNote(existing.note)
+    setLoaded(true)
+  }, [existing, loaded])
 
   const save = async () => {
     if (!title.trim()) {
       toast('Titel fehlt')
       return
     }
-    await termine().add({ title: title.trim(), kind, cid, nid, date, time, note: note.trim(), done: false })
-    toast('Termin gesichert')
+    const row = { title: title.trim(), kind, cid, nid, date, time, note: note.trim() }
+    if (existing) await termine().update(existing.id!, row)
+    else await termine().add({ ...row, done: false })
+    toast(existing ? 'Aktualisiert' : 'Termin gesichert')
     navigate('/projekt/termine')
   }
 
+  if (!loaded) return <Screen zone="mmm" />
+
   return (
     <Screen zone="mmm">
-      <ScreenHeader eyebrow="Termine" title="Neuer Termin" back="/projekt/termine" />
+      <ScreenHeader
+        eyebrow="Termine"
+        title={existing ? 'Termin bearbeiten' : 'Neuer Termin'}
+        back="/projekt/termine"
+      />
       <Scroll tight>
         <Field label="Art">
           <div>
@@ -191,7 +235,7 @@ export function TerminFormScreen() {
         <Field label="Ort / Notiz">
           <TextArea value={note} onChange={setNote} rows={3} placeholder="Wo, mit wem, was vorbereiten?" />
         </Field>
-        <Button onClick={() => void save()}>Termin sichern</Button>
+        <Button onClick={() => void save()}>{existing ? 'Änderungen sichern' : 'Termin sichern'}</Button>
       </Scroll>
     </Screen>
   )

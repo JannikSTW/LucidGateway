@@ -9,7 +9,17 @@ import { useDialog } from '../../../core/ui/dialog'
 import { useToast } from '../../../core/ui/toast'
 import { GlyphBadge } from '../components/glyphs'
 import { linkColor, linkLabel } from '../components/DreamMap'
-import { REGISTERS, countOf, dreamLinks, entriesWith, regItems, removeRegItem, setAnchor, useDreamWorld } from '../db'
+import {
+  REGISTERS,
+  countOf,
+  dreamLinks,
+  entriesWith,
+  regItems,
+  removeRegItem,
+  renameRegItem,
+  setAnchor,
+  useDreamWorld,
+} from '../db'
 import type { RegisterKey } from '../types'
 
 export function RegItemScreen() {
@@ -66,6 +76,17 @@ export function RegItemScreen() {
     } else {
       await setAnchor({ reg: key, name })
       toast('Stützpunkt gesetzt')
+    }
+  }
+
+  const rename = async () => {
+    const next = await dialog.text({ title: 'Umbenennen', value: name, okLabel: 'Umbenennen' })
+    if (!next) return
+    if (await renameRegItem(item, next)) {
+      toast('Umbenannt')
+      navigate(`/traumwelt/register/${key}/${encodeURIComponent(next.trim())}`, { replace: true })
+    } else {
+      toast('Name schon vergeben')
     }
   }
 
@@ -151,12 +172,15 @@ export function RegItemScreen() {
           )}
         </Card>
 
-        <Toolbar one={key !== 'ort'}>
+        <Toolbar three={key === 'ort'}>
           {key === 'ort' && (
             <button type="button" className={isAnchor ? 'marked' : ''} onClick={() => void toggleAnchor()}>
-              {isAnchor ? 'Stützpunkt aufheben' : 'Als Stützpunkt'}
+              {isAnchor ? 'Kein Stützpunkt' : 'Als Stützpunkt'}
             </button>
           )}
+          <button type="button" onClick={() => void rename()}>
+            Umbenennen
+          </button>
           <button type="button" className="del" onClick={() => void remove()}>
             Entfernen
           </button>

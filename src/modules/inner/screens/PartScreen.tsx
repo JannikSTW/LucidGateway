@@ -17,6 +17,7 @@ import {
   partLinkType,
   parts,
   removePart,
+  renamePart,
   roleColor,
   useInnerWorld,
 } from '../db'
@@ -61,6 +62,17 @@ export function PartScreen() {
   const saveNote = (v: string) => {
     setNote(v)
     void parts().update(part.id!, { note: v })
+  }
+
+  const rename = async () => {
+    const next = await dialog.text({ title: 'Anteil umbenennen', value: name, okLabel: 'Umbenennen' })
+    if (!next) return
+    if (await renamePart(part, next)) {
+      toast('Umbenannt')
+      navigate(`/innenwelt/anteil/${encodeURIComponent(next.trim())}`, { replace: true })
+    } else {
+      toast('Name schon vergeben')
+    }
   }
 
   const remove = async () => {
@@ -178,9 +190,12 @@ export function PartScreen() {
           )}
         </Card>
 
-        <Toolbar>
+        <Toolbar three>
           <button type="button" onClick={() => navigate(`/innenwelt/anteil/${encodeURIComponent(name)}/profil`)}>
-            Profil bearbeiten
+            Profil
+          </button>
+          <button type="button" onClick={() => void rename()}>
+            Umbenennen
           </button>
           <button type="button" className="del" onClick={() => void remove()}>
             Löschen

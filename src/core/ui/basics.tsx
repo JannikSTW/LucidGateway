@@ -67,8 +67,16 @@ export function Pill({ children, paper = false, style }: { children: ReactNode; 
   return <span className={`pill${paper ? ' paper' : ''}`} style={style}>{children}</span>
 }
 
-export function Toolbar({ children, one = false }: { children: ReactNode; one?: boolean }) {
-  return <div className={`toolbar${one ? ' one' : ''}`}>{children}</div>
+export function Toolbar({
+  children,
+  one = false,
+  three = false,
+}: {
+  children: ReactNode
+  one?: boolean
+  three?: boolean
+}) {
+  return <div className={`toolbar${one ? ' one' : ''}${three ? ' three' : ''}`}>{children}</div>
 }
 
 /** Hinweiskasten für Grenzen und Sicherheit. */

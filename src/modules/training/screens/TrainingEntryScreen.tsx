@@ -114,9 +114,12 @@ export function TrainingEntryScreen() {
           </>
         )}
 
-        <Toolbar one>
+        <Toolbar>
+          <button type="button" onClick={() => navigate(`/training/einheit/${training.id}/bearbeiten`)}>
+            Bearbeiten
+          </button>
           <button type="button" className="del" onClick={() => void remove()}>
-            Einheit löschen
+            Löschen
           </button>
         </Toolbar>
       </Scroll>

@@ -140,6 +140,11 @@ Rechner nur eingeschränkt prüfen.
   Chips, Regler und Fokusrahmen folgen automatisch.
 - **Sitzungen sind ein Gerüst im Kern.** Timer, Schema-Formular und Leseansicht
   teilen sich Innenwelt und OBE; ein Modul beschreibt nur seine Felder.
+- **Bearbeiten überall.** FEATURES §6 verlangt Bearbeiten und Löschen für alle
+  Objekte; der Prototyp hatte das nur für Journal-Einträge. Ergänzt für
+  Trainingseinheiten, Termine, Protokolle, Gedanken sowie Umbenennen von
+  Registerelementen und Anteilen — der Name ist dort die Identität und wird
+  durch Einträge, Verknüpfungen, Thesen und Stützpunkt mitgezogen.
 - **Marker in MindSpark.** Der Prototyp blendet sie dort aus, FEATURES §4.2
   verlangt sie ausdrücklich — hier gilt FEATURES, die Skala bleibt wie im
   Prototyp ausgeblendet.

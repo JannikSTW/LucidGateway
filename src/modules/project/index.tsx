@@ -36,12 +36,14 @@ export function registerProjectModule(): void {
       { path: 'projekt/umfeld/:id/verknuepfen', element: <UmfeldLinkScreen /> },
       { path: 'projekt/termine', element: <TermineScreen /> },
       { path: 'projekt/termine/neu', element: <TerminFormScreen /> },
+      { path: 'projekt/termine/:id/bearbeiten', element: <TerminFormScreen /> },
       { path: 'projekt/klienten', element: <ClientsScreen /> },
       { path: 'projekt/klienten/neu', element: <ClientFormScreen /> },
       { path: 'projekt/klienten/:id', element: <ClientScreen /> },
       { path: 'projekt/klienten/:id/bearbeiten', element: <ClientFormScreen /> },
       { path: 'projekt/klienten/:id/sitzung', element: <ClientSessionScreen /> },
       { path: 'projekt/protokoll/:id', element: <ProtocolScreen /> },
+      { path: 'projekt/protokoll/:id/bearbeiten', element: <ClientSessionScreen mode="edit" /> },
     ],
     dayMarkers: async () => {
       const all = await termine().filter((t) => !!t.date).toArray()

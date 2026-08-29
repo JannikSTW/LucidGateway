@@ -1,6 +1,6 @@
 import { useLiveQuery } from 'dexie-react-hooks'
 import { table } from '../../core/db/db'
-import { listEntries } from '../../core/db/entries'
+import { entriesTable, listEntries } from '../../core/db/entries'
 import type { Entry } from '../../core/types'
 import type { Part, PartLink, PartLinkType } from './types'
 
@@ -93,6 +93,32 @@ export async function addPart(name: string): Promise<boolean> {
   const all = await parts().toArray()
   if (all.some((p) => p.name.toLowerCase() === trimmed.toLowerCase())) return false
   await parts().add({ name: trimmed, note: '', profile: null })
+  return true
+}
+
+/** Auch hier ist der Name die Identität — er wird überall mitgezogen. */
+export async function renamePart(part: Part, name: string): Promise<boolean> {
+  const trimmed = name.trim()
+  if (!trimmed || trimmed === part.name) return false
+  const all = await parts().toArray()
+  if (all.some((p) => p.id !== part.id && p.name.toLowerCase() === trimmed.toLowerCase())) return false
+
+  await parts().update(part.id!, { name: trimmed })
+
+  const entries = await entriesTable().toArray()
+  for (const e of entries) {
+    if (!(e.parts ?? []).includes(part.name)) continue
+    await entriesTable().update(e.id!, { parts: (e.parts ?? []).map((n) => (n === part.name ? trimmed : n)) })
+  }
+
+  const links = await partLinks().toArray()
+  for (const l of links) {
+    if (l.a !== part.name && l.b !== part.name) continue
+    await partLinks().update(l.id!, {
+      a: l.a === part.name ? trimmed : l.a,
+      b: l.b === part.name ? trimmed : l.b,
+    })
+  }
   return true
 }
 

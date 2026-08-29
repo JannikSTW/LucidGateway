@@ -124,9 +124,12 @@ export function ProtocolScreen() {
           ]}
         />
 
-        <Toolbar one>
+        <Toolbar>
+          <button type="button" onClick={() => navigate(`/projekt/protokoll/${session.id}/bearbeiten`)}>
+            Bearbeiten
+          </button>
           <button type="button" className="del" onClick={() => void remove()}>
-            Protokoll löschen
+            Löschen
           </button>
         </Toolbar>
       </Scroll>

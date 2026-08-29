@@ -75,6 +75,13 @@ export function InboxScreen() {
     navigate(`/kategorie/${cat}`)
   }
 
+  const edit = async (t: Thought) => {
+    const text = await dialog.text({ title: 'Gedanke bearbeiten', value: t.text, multiline: true })
+    if (!text) return
+    await thoughts().update(t.id!, { text })
+    toast('Aktualisiert')
+  }
+
   const remove = async (t: Thought) => {
     const ok = await dialog.confirm({ title: 'Gedanke löschen?', text: firstLine(t.text, 60) })
     if (!ok) return
@@ -110,6 +117,7 @@ export function InboxScreen() {
                 <span>
                   <Chip onClick={() => void promote(t, 'ms')}>→ Journal</Chip>
                   <Chip onClick={() => void promote(t, 'mmm')}>→ Projekt</Chip>
+                  <Chip onClick={() => void edit(t)}>✎</Chip>
                   <Chip onClick={() => void remove(t)}>✕</Chip>
                 </span>
               </div>

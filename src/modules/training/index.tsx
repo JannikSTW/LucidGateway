@@ -5,6 +5,7 @@ import { KraftPickScreen } from './screens/KraftPickScreen'
 import { TemplateEditScreen, TemplatesScreen } from './screens/TemplateScreens'
 import { TrainFormScreen } from './screens/TrainFormScreen'
 import { TrainScreen } from './screens/TrainScreen'
+import { TrainEditScreen } from './screens/TrainEditScreen'
 import { TrainingEntryScreen } from './screens/TrainingEntryScreen'
 import { WorkoutScreen } from './screens/WorkoutScreen'
 
@@ -25,6 +26,7 @@ export function registerTrainingModule(): void {
       { path: 'training/kraft/start', element: <KraftPickScreen /> },
       { path: 'training/kraft/einheit/:key', element: <WorkoutScreen /> },
       { path: 'training/einheit/:id', element: <TrainingEntryScreen /> },
+      { path: 'training/einheit/:id/bearbeiten', element: <TrainEditScreen /> },
       { path: 'training/:disc', element: <DiscScreen /> },
       { path: 'training/:disc/neu', element: <TrainFormScreen /> },
     ],
