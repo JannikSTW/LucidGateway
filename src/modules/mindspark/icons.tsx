@@ -31,3 +31,9 @@ export const IconTarget = () => (
     <path d="M16 5V2M16 30v-3M5 16H2M30 16h-3" />
   </Ic>
 )
+
+export const IconPlusRound = () => (
+  <Ic box={32}>
+    <path d="M16 7v18M7 16h18" />
+  </Ic>
+)

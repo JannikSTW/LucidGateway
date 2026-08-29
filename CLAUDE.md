@@ -112,7 +112,7 @@ Prototyp bereits formuliert und sollten übernommen werden.
 - [x] Phase 5 — Innenwelt und IFS-Landkarte — 29.08.2026
 - [x] Phase 6 — Trainingslog — 29.08.2026
 - [x] Phase 7 — Projekt: Umfeld, Termine, Klienten — 29.08.2026
-- [ ] Phase 8 — Ziele, Gedankenspeicher
+- [x] Phase 8 — Ziele, Gedankenspeicher — 29.08.2026
 - [ ] Phase 9 — Reality Checks mit Push
 - [ ] Phase 10 — Dream Adventures
 
