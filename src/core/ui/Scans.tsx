@@ -37,13 +37,29 @@ export function ScanThumb({ id, big = false, onRemove }: { id: number; big?: boo
   )
 }
 
+/** Zeigt die Seiten; ein Tipp vergrößert sie — Handschrift will lesbar sein. */
 export function ScanStrip({ ids, big = false }: { ids: number[]; big?: boolean }) {
+  const [open, setOpen] = useState<number | null>(null)
   if (!ids.length) return null
   return (
-    <div className="scan-thumbs">
-      {ids.map((id) => (
-        <ScanThumb key={id} id={id} big={big} />
-      ))}
+    <>
+      <div className="scan-thumbs">
+        {ids.map((id) => (
+          <div key={id} role="button" tabIndex={0} onClick={() => setOpen(id)} onKeyDown={(e) => e.key === 'Enter' && setOpen(id)}>
+            <ScanThumb id={id} big={big} />
+          </div>
+        ))}
+      </div>
+      {open !== null && <Lightbox id={open} onClose={() => setOpen(null)} />}
+    </>
+  )
+}
+
+function Lightbox({ id, onClose }: { id: number; onClose: () => void }) {
+  const url = useObjectUrl(id)
+  return (
+    <div className="lightbox" role="button" tabIndex={0} onClick={onClose} onKeyDown={(e) => e.key === 'Escape' && onClose()}>
+      {url && <img src={url} alt="Tagebuchseite" />}
     </div>
   )
 }

@@ -107,7 +107,7 @@ Prototyp bereits formuliert und sollten übernommen werden.
 - [x] Phase 0 — Fundament (Setup, Theme, Nav, Dexie, Modul-Registry, Export, Deployment) — 29.08.2026
 - [x] Phase 1 — Dashboard, Kategorien, Journal, Archiv, Bearbeiten/Löschen, Dialoge — 29.08.2026
 - [x] Phase 2 — Zustandsprofil, Register, Traumwelt-Karte, Stützpunkt, Verknüpfungen — 29.08.2026
-- [ ] Phase 3 — Papier-Modus (auf dem Handy testen)
+- [x] Phase 3 — Papier-Modus (auf dem Handy testen) — 29.08.2026, Kamera noch nicht am Gerät geprüft
 - [ ] Phase 4 — OBE-Bereich
 - [ ] Phase 5 — Innenwelt und IFS-Landkarte
 - [ ] Phase 6 — Trainingslog
