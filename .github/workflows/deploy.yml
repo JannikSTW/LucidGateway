@@ -2,7 +2,9 @@ name: PWA bauen und auf GitHub Pages veröffentlichen
 
 on:
   push:
-    branches: [main]
+    # Der Entwicklungszweig ist mit dabei, damit die App schon vor dem Merge
+    # auf dem Handy getestet werden kann. Nach dem Merge kann er raus.
+    branches: [main, claude/lucid-gateway-app-build-3x90fj]
   workflow_dispatch:
 
 permissions:
@@ -37,7 +39,12 @@ jobs:
           VITE_BASE: /${{ github.event.repository.name }}/
         run: npm run build
 
-      - uses: actions/configure-pages@v5
+      - name: Pages einrichten
+        # `enablement` schaltet GitHub Pages beim ersten Lauf selbst ein,
+        # damit das niemand von Hand in den Einstellungen suchen muss.
+        uses: actions/configure-pages@v5
+        with:
+          enablement: true
 
       - uses: actions/upload-pages-artifact@v3
         with:
