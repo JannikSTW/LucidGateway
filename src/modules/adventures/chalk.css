@@ -6,6 +6,14 @@
 .chalk {
   --ch: var(--chalk);
   --ch-dim: var(--chalk-dim);
+  /* Die Tafel bleibt in beiden Modi dunkel — auch hinter der Kopfzeile. */
+  background: var(--chalk-bg);
+}
+.chalk .hdr {
+  background: transparent;
+}
+.chalk .chalk-h {
+  color: var(--chalk);
 }
 .chalk .scroll {
   background: radial-gradient(circle at 30% 12%, #14171c 0%, var(--chalk-bg) 60%);

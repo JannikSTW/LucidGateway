@@ -39,3 +39,18 @@ export async function loadImage(id: number): Promise<StoredImage | undefined> {
 export async function deleteImage(id: number): Promise<void> {
   await imagesTable().delete(id)
 }
+
+/**
+ * Räumt Bilder weg, auf die kein Eintrag mehr zeigt — etwa weil eine Seite
+ * beim Erfassen wieder entfernt und der Eintrag nie gesichert wurde.
+ * Läuft einmal beim Start.
+ */
+export async function cleanupOrphanImages(): Promise<number> {
+  const entries = await table<{ scans?: number[] }>('entries').toArray()
+  const used = new Set<number>()
+  for (const e of entries) for (const id of e.scans ?? []) used.add(id)
+  const all = await imagesTable().toArray()
+  const orphans = all.filter((img) => img.id !== undefined && !used.has(img.id)).map((img) => img.id!)
+  if (orphans.length) await imagesTable().bulkDelete(orphans)
+  return orphans.length
+}

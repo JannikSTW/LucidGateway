@@ -117,3 +117,29 @@ Prototyp bereits formuliert und sollten übernommen werden.
 - [x] Phase 10 — Dream Adventures — 29.08.2026
 
 *(Nach jeder Phase abhaken und Datum notieren.)*
+
+Alle Phasen sind umgesetzt. Offen bleibt der Test am Gerät: Kamera und
+Bildkomprimierung (Phase 3) sowie die Erinnerungen (Phase 9) lassen sich am
+Rechner nur eingeschränkt prüfen.
+
+---
+
+## Entscheidungen, die man kennen muss
+
+- **Häufigkeiten werden abgeleitet, nicht mitgezählt.** Wie oft ein Traumzeichen
+  oder ein Anteil auftauchte, wird aus den Einträgen berechnet. Dadurch kann
+  nichts auseinanderlaufen, wenn ein Eintrag bearbeitet oder gelöscht wird.
+- **Das Datenbankschema baut die Registry.** Beim Start wird das gewünschte
+  Schema mit dem verglichen, was auf dem Gerät liegt; die Version steigt nur bei
+  einer echten Änderung. Ein neues Modul braucht deshalb keine Migration von Hand.
+- **Reality Checks ohne Server.** Echtes Web Push bräuchte einen Absender im
+  Netz — den gibt es bewusst nicht. Die Erinnerungen entstehen auf dem Gerät:
+  ein Tagesplan mit zufälligen Zeiten, im Voraus eingeplant, wo der Browser
+  Notification Triggers kann, sonst gezeigt, solange die App läuft.
+- **Bereichstöne statt Farbliteralen.** Ein Bildschirm setzt `zone-<key>`; Knöpfe,
+  Chips, Regler und Fokusrahmen folgen automatisch.
+- **Sitzungen sind ein Gerüst im Kern.** Timer, Schema-Formular und Leseansicht
+  teilen sich Innenwelt und OBE; ein Modul beschreibt nur seine Felder.
+- **Marker in MindSpark.** Der Prototyp blendet sie dort aus, FEATURES §4.2
+  verlangt sie ausdrücklich — hier gilt FEATURES, die Skala bleibt wie im
+  Prototyp ausgeblendet.

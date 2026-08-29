@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { loadImage, storeImage, deleteImage } from '../db/images'
+import { loadImage, storeImage } from '../db/images'
 import { IconCamera } from './icons'
 import { useToast } from './toast'
 
@@ -99,10 +99,9 @@ export function ScanPicker({ ids, onChange }: { ids: number[]; onChange: (ids: n
     }
   }
 
-  const remove = async (id: number) => {
-    await deleteImage(id)
-    onChange(ids.filter((x) => x !== id))
-  }
+  // Die Datei selbst bleibt vorerst liegen; verwaiste Bilder räumt der
+  // Start auf. So geht beim Abbrechen einer Bearbeitung nichts verloren.
+  const remove = (id: number) => onChange(ids.filter((x) => x !== id))
 
   return (
     <>
@@ -125,7 +124,7 @@ export function ScanPicker({ ids, onChange }: { ids: number[]; onChange: (ids: n
       {ids.length > 0 && (
         <div className="scan-thumbs">
           {ids.map((id) => (
-            <ScanThumb key={id} id={id} onRemove={() => void remove(id)} />
+            <ScanThumb key={id} id={id} onRemove={() => remove(id)} />
           ))}
         </div>
       )}

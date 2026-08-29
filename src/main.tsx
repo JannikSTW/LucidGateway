@@ -5,6 +5,7 @@ import './core/theme/base.css'
 import './core/theme/components.css'
 import { App } from './App'
 import { initDb } from './core/db/db'
+import { cleanupOrphanImages } from './core/db/images'
 import { moduleTables, seedModules } from './core/modules/registry'
 import { registerAllModules } from './modules'
 
@@ -12,6 +13,7 @@ async function bootstrap() {
   registerAllModules()
   await initDb(moduleTables())
   await seedModules()
+  await cleanupOrphanImages()
 
   const root = document.getElementById('root')
   if (!root) throw new Error('Wurzelelement fehlt')
