@@ -1,0 +1,314 @@
+/* ============================================================
+   Grundgerüst: Reset, App-Shell, Typografie, Navigation.
+   ============================================================ */
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html {
+  height: 100%;
+  color-scheme: dark;
+}
+:root[data-theme='light'] {
+  color-scheme: light;
+}
+
+body {
+  background: var(--backdrop);
+  color: var(--paper);
+  font-family: var(--font-ui);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+  padding: var(--sp-7) 0;
+}
+
+#root {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+/* Die App liegt in einem Telefonrahmen — am Handy randlos. */
+.app {
+  width: 100%;
+  max-width: 390px;
+  height: 100%;
+  background: var(--ink);
+  border-radius: 24px;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 0 0 1px var(--line), 0 24px 70px rgba(0, 0, 0, 0.65);
+}
+:root[data-theme='light'] .app {
+  box-shadow: 0 0 0 1px var(--line), 0 24px 70px rgba(50, 40, 30, 0.22);
+}
+
+@media (max-width: 430px) {
+  body {
+    padding: 0;
+  }
+  .app {
+    border-radius: 0;
+    box-shadow: none;
+  }
+}
+
+/* ---------- Bildschirm ---------- */
+.screen {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  animation: rise 0.2s ease;
+}
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .screen {
+    animation: none;
+  }
+}
+
+.scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  padding: var(--sp-9) var(--gutter) var(--nav-space);
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  background: var(--zone-glow);
+}
+.scroll::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none;
+}
+.scroll.tight {
+  padding-top: var(--sp-7);
+}
+
+/* ---------- Bereichstöne ---------- */
+/* Jeder Bereich färbt nur diese Variablen um — der Rest folgt automatisch. */
+.zone-ld {
+  --zone: var(--cat-ld);
+  --zone-soft: var(--cat-ld-tint);
+  --zone-fg: var(--cat-ld-fg);
+  --zone-on: #fff;
+}
+.zone-ms {
+  --zone: var(--cat-ms);
+  --zone-soft: var(--cat-ms-tint);
+  --zone-fg: var(--cat-ms-fg);
+  --zone-on: #1a1206;
+  --zone-glow: radial-gradient(circle at 50% 0%, rgba(240, 167, 90, 0.09) 0%, var(--ink) 55%);
+}
+.zone-ai {
+  --zone: var(--cat-ai);
+  --zone-soft: var(--cat-ai-tint);
+  --zone-fg: var(--cat-ai-fg);
+  --zone-on: #fff;
+  --zone-glow: radial-gradient(circle at 50% 0%, rgba(224, 139, 184, 0.08) 0%, var(--ink) 58%);
+}
+.zone-mmm {
+  --zone: var(--cat-mmm);
+  --zone-soft: var(--cat-mmm-tint);
+  --zone-fg: var(--cat-mmm-fg);
+  --zone-on: #fff;
+  --zone-glow: radial-gradient(circle at 50% 0%, rgba(229, 84, 75, 0.1) 0%, var(--ink) 58%);
+}
+.zone-obe {
+  --zone: var(--cat-obe);
+  --zone-soft: var(--cat-obe-tint);
+  --zone-fg: var(--cat-obe-fg);
+  --zone-on: #06201a;
+  --zone-glow: radial-gradient(circle at 50% 0%, rgba(94, 201, 180, 0.09) 0%, var(--ink) 58%);
+}
+:root[data-theme='light'] .zone-obe,
+:root[data-theme='light'] .zone-mmm,
+:root[data-theme='light'] .zone-ms {
+  --zone-on: #fff;
+}
+
+/* ---------- Typografie ---------- */
+h1.display {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 25px;
+  line-height: 1.2;
+}
+h2.display {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 20px;
+}
+.eyebrow {
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--mist);
+  margin-bottom: var(--sp-2);
+}
+.eyebrow.zoned {
+  color: var(--zone-fg);
+}
+.sub {
+  color: var(--mist);
+  font-size: 13.5px;
+  line-height: 1.45;
+}
+.sub.strong {
+  color: var(--paper);
+}
+.sub.small {
+  font-size: 11.5px;
+}
+.pre {
+  white-space: pre-line;
+}
+.quote {
+  font-family: var(--font-display);
+  font-size: 15px;
+  line-height: 1.45;
+}
+
+/* ---------- Kopfzeile ---------- */
+.hdr {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-5);
+  padding: var(--sp-8) var(--gutter) 0;
+  flex-shrink: 0;
+}
+.hdr .back {
+  background: none;
+  border: none;
+  color: var(--mist);
+  font-size: 20px;
+  cursor: pointer;
+  padding: 2px 6px 2px 0;
+  font-family: inherit;
+}
+.hdr .hicon {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--r-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.hdr .hicon svg {
+  width: 24px;
+  height: 24px;
+}
+.hdr .htxt {
+  min-width: 0;
+}
+.hdr .eyebrow {
+  margin: 0;
+}
+
+svg.ic {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* ---------- Navigation ---------- */
+.nav {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 20;
+  background: color-mix(in srgb, var(--ink) 94%, transparent);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-top: 1px solid var(--line);
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  align-items: center;
+  padding: var(--sp-4) var(--sp-6) calc(var(--sp-7) + env(safe-area-inset-bottom));
+}
+.nav button {
+  background: none;
+  border: none;
+  color: var(--mist);
+  cursor: pointer;
+  font-family: inherit;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--sp-2) 0;
+}
+.nav button svg {
+  width: 22px;
+  height: 22px;
+}
+.nav button.on {
+  color: var(--violet);
+}
+.nav .fab {
+  background: var(--violet);
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  margin: -26px auto 0;
+  color: #fff;
+  box-shadow: 0 8px 20px rgba(139, 124, 246, 0.45);
+}
+.nav .fab svg {
+  width: 25px;
+  height: 25px;
+}
+
+/* ---------- Toast ---------- */
+.toast {
+  position: absolute;
+  bottom: 96px;
+  left: 50%;
+  transform: translateX(-50%) translateY(10px);
+  background: var(--panel2);
+  border: 1px solid var(--violet);
+  color: var(--violet-fg);
+  font-size: 13px;
+  font-weight: 600;
+  padding: var(--sp-4) var(--sp-8);
+  border-radius: var(--r-pill);
+  opacity: 0;
+  transition: 0.25s;
+  pointer-events: none;
+  z-index: 50;
+  max-width: calc(100% - 40px);
+  text-align: center;
+}
+.toast.show {
+  opacity: 1;
+  transform: translateX(-50%);
+}

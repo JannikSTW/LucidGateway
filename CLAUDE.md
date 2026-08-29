@@ -104,16 +104,47 @@ Prototyp bereits formuliert und sollten übernommen werden.
 
 ## Aktueller Stand
 
-- [ ] Phase 0 — Fundament (Setup, Theme, Nav, Dexie, Modul-Registry, Export, Deployment)
-- [ ] Phase 1 — Dashboard, Kategorien, Journal, Archiv, Bearbeiten/Löschen, Dialoge
-- [ ] Phase 2 — Zustandsprofil, Register, Traumwelt-Karte, Stützpunkt, Verknüpfungen
-- [ ] Phase 3 — Papier-Modus (auf dem Handy testen)
-- [ ] Phase 4 — OBE-Bereich
-- [ ] Phase 5 — Innenwelt und IFS-Landkarte
-- [ ] Phase 6 — Trainingslog
-- [ ] Phase 7 — Projekt: Umfeld, Termine, Klienten
-- [ ] Phase 8 — Ziele, Gedankenspeicher
-- [ ] Phase 9 — Reality Checks mit Push
-- [ ] Phase 10 — Dream Adventures
+- [x] Phase 0 — Fundament (Setup, Theme, Nav, Dexie, Modul-Registry, Export, Deployment) — 29.08.2026
+- [x] Phase 1 — Dashboard, Kategorien, Journal, Archiv, Bearbeiten/Löschen, Dialoge — 29.08.2026
+- [x] Phase 2 — Zustandsprofil, Register, Traumwelt-Karte, Stützpunkt, Verknüpfungen — 29.08.2026
+- [x] Phase 3 — Papier-Modus (auf dem Handy testen) — 29.08.2026, Kamera noch nicht am Gerät geprüft
+- [x] Phase 4 — OBE-Bereich — 29.08.2026
+- [x] Phase 5 — Innenwelt und IFS-Landkarte — 29.08.2026
+- [x] Phase 6 — Trainingslog — 29.08.2026
+- [x] Phase 7 — Projekt: Umfeld, Termine, Klienten — 29.08.2026
+- [x] Phase 8 — Ziele, Gedankenspeicher — 29.08.2026
+- [x] Phase 9 — Reality Checks mit Push (gerätelokal, ohne Server) — 29.08.2026
+- [x] Phase 10 — Dream Adventures — 29.08.2026
 
 *(Nach jeder Phase abhaken und Datum notieren.)*
+
+Alle Phasen sind umgesetzt. Offen bleibt der Test am Gerät: Kamera und
+Bildkomprimierung (Phase 3) sowie die Erinnerungen (Phase 9) lassen sich am
+Rechner nur eingeschränkt prüfen.
+
+---
+
+## Entscheidungen, die man kennen muss
+
+- **Häufigkeiten werden abgeleitet, nicht mitgezählt.** Wie oft ein Traumzeichen
+  oder ein Anteil auftauchte, wird aus den Einträgen berechnet. Dadurch kann
+  nichts auseinanderlaufen, wenn ein Eintrag bearbeitet oder gelöscht wird.
+- **Das Datenbankschema baut die Registry.** Beim Start wird das gewünschte
+  Schema mit dem verglichen, was auf dem Gerät liegt; die Version steigt nur bei
+  einer echten Änderung. Ein neues Modul braucht deshalb keine Migration von Hand.
+- **Reality Checks ohne Server.** Echtes Web Push bräuchte einen Absender im
+  Netz — den gibt es bewusst nicht. Die Erinnerungen entstehen auf dem Gerät:
+  ein Tagesplan mit zufälligen Zeiten, im Voraus eingeplant, wo der Browser
+  Notification Triggers kann, sonst gezeigt, solange die App läuft.
+- **Bereichstöne statt Farbliteralen.** Ein Bildschirm setzt `zone-<key>`; Knöpfe,
+  Chips, Regler und Fokusrahmen folgen automatisch.
+- **Sitzungen sind ein Gerüst im Kern.** Timer, Schema-Formular und Leseansicht
+  teilen sich Innenwelt und OBE; ein Modul beschreibt nur seine Felder.
+- **Bearbeiten überall.** FEATURES §6 verlangt Bearbeiten und Löschen für alle
+  Objekte; der Prototyp hatte das nur für Journal-Einträge. Ergänzt für
+  Trainingseinheiten, Termine, Protokolle, Gedanken sowie Umbenennen von
+  Registerelementen und Anteilen — der Name ist dort die Identität und wird
+  durch Einträge, Verknüpfungen, Thesen und Stützpunkt mitgezogen.
+- **Marker in MindSpark.** Der Prototyp blendet sie dort aus, FEATURES §4.2
+  verlangt sie ausdrücklich — hier gilt FEATURES, die Skala bleibt wie im
+  Prototyp ausgeblendet.
