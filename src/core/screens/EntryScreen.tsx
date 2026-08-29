@@ -8,6 +8,7 @@ import { useToast } from '../ui/toast'
 import { deleteEntry, useEntry } from '../db/entries'
 import { category, entryViews } from '../modules/registry'
 import { ProfileCard } from '../profile'
+import { SessionDetails } from '../session/SessionDetails'
 
 export function EntryScreen() {
   const { id } = useParams()
@@ -49,6 +50,8 @@ export function EntryScreen() {
         fg={cat.fg}
       />
       <Scroll tight>
+        {entry.med && <SessionDetails entry={entry} />}
+
         {entryViews('before').map(({ id: vid, Component }) => (
           <Component key={vid} entry={entry} />
         ))}

@@ -1,5 +1,6 @@
 import { registerDreamModule } from './dream/index'
 import { registerMindSparkModule } from './mindspark/index'
+import { registerObeModule } from './obe/index'
 import { registerProjectModule } from './project/index'
 
 /**
@@ -9,6 +10,7 @@ import { registerProjectModule } from './project/index'
  */
 export function registerAllModules(): void {
   registerDreamModule()
+  registerObeModule()
   registerMindSparkModule()
   registerProjectModule()
 }

@@ -7,6 +7,7 @@ import { EntryScreen } from './core/screens/EntryScreen'
 import { JournalScreen } from './core/screens/JournalScreen'
 import { PickScreen } from './core/screens/PickScreen'
 import { SettingsScreen } from './core/screens/SettingsScreen'
+import { SessionScreen } from './core/session/SessionScreen'
 import { allRoutes } from './core/modules/registry'
 
 /**
@@ -27,6 +28,7 @@ export function App() {
         { path: 'journal/:key', element: <JournalScreen /> },
         { path: 'journal/:key/:id', element: <JournalScreen /> },
         { path: 'eintrag/:id', element: <EntryScreen /> },
+        { path: 'sitzung/:method', element: <SessionScreen /> },
         { path: 'einstellungen', element: <SettingsScreen /> },
         ...allRoutes(),
         { path: '*', element: <DashboardScreen /> },
