@@ -87,7 +87,7 @@ export function UmfeldFormScreen() {
         </Field>
 
         <Field label="Name">
-          <TextInput value={name} onChange={setName} placeholder="z. B. Jugendhaus Metzingen" />
+          <TextInput value={name} onChange={setName} placeholder="z. B. das Jugendhaus" />
         </Field>
 
         {nkind(kind).fields.map(([key, label, ph]) => (
