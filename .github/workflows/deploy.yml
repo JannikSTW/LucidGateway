@@ -2,9 +2,7 @@ name: PWA bauen und auf GitHub Pages veröffentlichen
 
 on:
   push:
-    # Der Entwicklungszweig ist mit dabei, damit die App schon vor dem Merge
-    # auf dem Handy getestet werden kann. Nach dem Merge kann er raus.
-    branches: [main, claude/lucid-gateway-app-build-3x90fj]
+    branches: [main]
   workflow_dispatch:
 
 permissions:
