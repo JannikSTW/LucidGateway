@@ -158,4 +158,6 @@ export interface ModuleDef {
   onEntryDeleted?: (entry: Entry) => Promise<void>
   /** Schnelleintrag auf dem Erfassen-Bildschirm (ein Feld, ein Tap) */
   quickCapture?: { label: string; hint: string; icon: ReactNode; to: string }
+  /** Unsichtbare Mitläufer, z. B. der Wecker für Reality Checks */
+  background?: { id: string; Component: ComponentType }[]
 }

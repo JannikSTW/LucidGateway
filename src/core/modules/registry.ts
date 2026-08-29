@@ -55,6 +55,10 @@ export function allTools() {
   return modules.flatMap((m) => m.tools ?? [])
 }
 
+export function backgroundTasks() {
+  return modules.flatMap((m) => m.background ?? [])
+}
+
 export function quickCaptures() {
   return modules.flatMap((m) => (m.quickCapture ? [m.quickCapture] : []))
 }

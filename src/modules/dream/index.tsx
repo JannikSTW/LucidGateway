@@ -8,6 +8,12 @@ import { RegisterScreen } from './screens/RegisterScreen'
 import { RegItemScreen } from './screens/RegItemScreen'
 import { LinkScreen } from './screens/LinkScreen'
 import { ThesesScreen, ThesisFormScreen } from './screens/ThesesScreen'
+import { RealityCheckScreen } from './screens/RealityCheckScreen'
+import { RcRunner } from './components/RcRunner'
+import { IconEye } from '../../core/ui/icons'
+import { seedChecks } from './rc'
+import { rcChecks } from './db'
+import { plural } from '../../core/util/text'
 
 /**
  * Luzides Träumen — Traumjournal, Register, Traumwelt-Karte, Reality Checks.
@@ -23,7 +29,21 @@ export function registerDreamModule(): void {
       verbindungen: '++id',
       rcChecks: '++id',
     },
+    seed: seedChecks,
+    background: [{ id: 'rc-runner', Component: RcRunner }],
+    tools: [
+      {
+        id: 'reality-checks',
+        label: 'Reality Checks',
+        icon: <IconEye />,
+        to: '/reality-checks',
+        tint: 'var(--cat-ld-tint)',
+        fg: 'var(--cat-ld-fg)',
+        hint: async () => plural((await rcChecks().toArray()).filter((c) => c.on).length, 'aktive Frage', 'aktive Fragen'),
+      },
+    ],
     routes: [
+      { path: 'reality-checks', element: <RealityCheckScreen /> },
       { path: 'traumwelt', element: <DreamWorldScreen /> },
       { path: 'traumwelt/verbindungen', element: <ThesesScreen /> },
       { path: 'traumwelt/verbindungen/neu', element: <ThesisFormScreen /> },

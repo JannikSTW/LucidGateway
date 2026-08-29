@@ -15,12 +15,14 @@ export default defineConfig({
   plugins: [
     react(),
     VitePWA({
+      // Eigener Service Worker: Offline-Betrieb plus Erinnerungen für Reality Checks.
+      strategies: 'injectManifest',
+      srcDir: 'src',
+      filename: 'sw.ts',
       registerType: 'autoUpdate',
       includeAssets: ['icons/favicon.svg', 'icons/apple-touch-icon.png'],
-      workbox: {
+      injectManifest: {
         globPatterns: ['**/*.{js,css,html,svg,png,woff2}'],
-        navigateFallback: `${base}index.html`,
-        cleanupOutdatedCaches: true,
       },
       manifest: {
         name: 'Lucid Gateway',
