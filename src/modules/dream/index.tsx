@@ -3,6 +3,11 @@ import { ProfileExtra } from '../../core/profile'
 import { DreamExtra } from './components/DreamExtra'
 import { ElementsExtra } from './components/ElementsExtra'
 import { IconDream } from './icons'
+import { DreamWorldScreen } from './screens/DreamWorldScreen'
+import { RegisterScreen } from './screens/RegisterScreen'
+import { RegItemScreen } from './screens/RegItemScreen'
+import { LinkScreen } from './screens/LinkScreen'
+import { ThesesScreen, ThesisFormScreen } from './screens/ThesesScreen'
 
 /**
  * Luzides Träumen — Traumjournal, Register, Traumwelt-Karte, Reality Checks.
@@ -18,6 +23,14 @@ export function registerDreamModule(): void {
       verbindungen: '++id',
       rcChecks: '++id',
     },
+    routes: [
+      { path: 'traumwelt', element: <DreamWorldScreen /> },
+      { path: 'traumwelt/verbindungen', element: <ThesesScreen /> },
+      { path: 'traumwelt/verbindungen/neu', element: <ThesisFormScreen /> },
+      { path: 'traumwelt/register/:reg', element: <RegisterScreen /> },
+      { path: 'traumwelt/register/:reg/:name', element: <RegItemScreen /> },
+      { path: 'traumwelt/register/:reg/:name/verknuepfen', element: <LinkScreen /> },
+    ],
     categories: [
       {
         key: 'ld',
