@@ -33,8 +33,16 @@ und erst dann sind Erinnerungen für Reality Checks möglich.
 Jeder Push auf `main` baut die App und stellt sie über GitHub Actions auf
 GitHub Pages bereit (`.github/workflows/deploy.yml`). Die Vite-`base` setzt der
 Workflow auf den Repository-Pfad, damit Service Worker und Manifest ihre Dateien
-finden. Einmalig in den Repository-Einstellungen unter *Pages* als Quelle
-**GitHub Actions** wählen.
+finden.
+
+**Einmalig nötig:** Repository → *Settings* → *Pages* → als Quelle
+**GitHub Actions** wählen. Der Workflow kann das nicht selbst erledigen — sein
+Token darf die Seite nicht anlegen. Bei einem **privaten** Repository bietet
+GitHub diese Einstellung erst ab Pro an; auf dem freien Plan muss das Repository
+dafür öffentlich sein. Im Code stehen keine persönlichen Daten — alle Einträge
+liegen ausschließlich im Browser des Geräts.
+
+Die Adresse lautet danach `https://<konto>.github.io/<repository>/`.
 
 ## Aufbau
 
