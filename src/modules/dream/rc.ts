@@ -1,7 +1,8 @@
 import { useLiveQuery } from 'dexie-react-hooks'
 import { getSetting, setSetting, useSetting } from '../../core/db/settings'
 import { todayIso } from '../../core/util/date'
-import { rcChecks } from './db'
+import { listEntries } from '../../core/db/entries'
+import { rcChecks, regItems } from './db'
 import type { RcCheck } from './types'
 
 /**
@@ -57,37 +58,80 @@ export function useRcChecks(): RcCheck[] | undefined {
   return useLiveQuery(() => rcChecks().toArray(), [])
 }
 
-interface RcPlan {
+export interface RcPlan {
   iso: string
+  /** Erkennt, ob der Plan noch zur Einstellung passt */
+  key: string
   /** Zeitstempel der geplanten Erinnerungen */
   times: number[]
+  /** Der eine Extra-Check, der ein Traumzeichen beim Namen nennt */
+  signTime: number | null
   fired: number[]
+}
+
+const planKey = (c: RcConfig) => `${c.freq}|${c.window}|${c.random}|${c.signs}`
+
+function atMinute(day: Date, minutes: number): number {
+  const d = new Date(day)
+  d.setHours(0, Math.round(minutes), 0, 0)
+  return d.getTime()
 }
 
 /** Verteilt die Erinnerungen zufällig, aber mit Abstand, über das Zeitfenster. */
 export function planTimes(config: RcConfig, day = new Date()): number[] {
+  if (!config.random) return []
   const [from, to] = RC_WINDOWS[config.window] ?? RC_WINDOWS['9–21 Uhr']
   const slotMinutes = ((to - from) * 60) / config.freq
   const times: number[] = []
   for (let i = 0; i < config.freq; i++) {
     const start = from * 60 + i * slotMinutes
     // innerhalb des Slots zufällig, aber nicht direkt am Rand
-    const offset = slotMinutes * (0.15 + Math.random() * 0.7)
-    const minutes = Math.round(start + offset)
-    const d = new Date(day)
-    d.setHours(0, minutes, 0, 0)
-    times.push(d.getTime())
+    times.push(atMinute(day, start + slotMinutes * (0.15 + Math.random() * 0.7)))
   }
   return times
 }
 
+/** Ein zusätzlicher Zeitpunkt für den Traumzeichen-Check. */
+export function planSignTime(config: RcConfig, day = new Date()): number | null {
+  if (!config.signs) return null
+  const [from, to] = RC_WINDOWS[config.window] ?? RC_WINDOWS['9–21 Uhr']
+  return atMinute(day, (from + Math.random() * (to - from)) * 60)
+}
+
 export async function ensurePlan(config: RcConfig): Promise<RcPlan> {
   const iso = todayIso()
+  const key = planKey(config)
   const plan = await getSetting<RcPlan | null>(RC_PLAN_KEY, null)
-  if (plan && plan.iso === iso && plan.times.length === config.freq) return plan
-  const fresh: RcPlan = { iso, times: planTimes(config), fired: [] }
+  if (plan && plan.iso === iso && plan.key === key) return plan
+  const fresh: RcPlan = {
+    iso,
+    key,
+    times: planTimes(config),
+    signTime: planSignTime(config),
+    fired: [],
+  }
   await setSetting(RC_PLAN_KEY, fresh)
   return fresh
+}
+
+/** Das häufigste Traumzeichen — der Check nennt es beim Namen. */
+export async function topDreamSign(): Promise<string | null> {
+  const [items, entries] = await Promise.all([regItems().toArray(), listEntries()])
+  const signs = items.filter((i) => i.register === 'zeichen')
+  if (!signs.length) return null
+  const counted = signs
+    .map((s) => ({
+      name: s.name,
+      n: entries.filter((e) => (e.els?.zeichen ?? []).includes(s.name)).length,
+    }))
+    .sort((a, b) => b.n - a.n)
+  return counted[0].n > 0 ? counted[0].name : null
+}
+
+export function signQuestion(sign: string | null): string {
+  return sign
+    ? `Taucht gerade „${sign}“ auf? Schau genau hin — träumst du?`
+    : 'Kommt dir gerade etwas bekannt vor? Prüfe, ob du wach bist.'
 }
 
 export async function clearPlan(): Promise<void> {
@@ -140,7 +184,8 @@ export async function showCheck(text: string): Promise<void> {
   }
 }
 
-/** Plant alle künftigen Zeitpunkte im Voraus ein — nur wo der Browser das kann. */
+/** Plant alle künftigen Zeitpunkte im Voraus ein — nur wo der Browser das kann.
+ *  `questions[i]` gehört zu `times[i]`. */
 export async function scheduleAhead(times: number[], questions: string[]): Promise<boolean> {
   if (!supportsTriggers()) return false
   const reg = await registration()
@@ -148,11 +193,9 @@ export async function scheduleAhead(times: number[], questions: string[]): Promi
   const existing = await reg.getNotifications({ includeTriggered: true } as never)
   for (const n of existing) if (n.tag?.startsWith('rc-')) n.close()
   const now = Date.now()
-  let i = 0
-  for (const t of times) {
+  for (const [i, t] of times.entries()) {
     if (t <= now) continue
-    const body = questions[i % questions.length] ?? 'Bist du sicher, dass du wach bist?'
-    i++
+    const body = questions[i] || 'Bist du sicher, dass du wach bist?'
     await reg.showNotification('Lucid Gateway', {
       body,
       tag: `rc-${t}`,

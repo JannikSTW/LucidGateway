@@ -130,7 +130,11 @@ export function RealityCheckScreen() {
             title="Benachrichtigungen"
             sub={
               config.on
-                ? `${config.freq}× täglich · ${config.window} · ${plural(active.length, 'Frage', 'Fragen')}`
+                ? `${config.random ? `${config.freq}× täglich` : 'nur an Traumzeichen'} · ${config.window} · ${plural(
+                    active.length,
+                    'Frage',
+                    'Fragen',
+                  )}`
                 : 'Noch nicht aktiviert'
             }
             right={<Toggle checked={config.on} onChange={(v) => void toggle(v)} />}
@@ -216,16 +220,26 @@ export function RealityCheckScreen() {
           <SettingRowUI
             title="Zufällig im Zeitfenster"
             sub="Unvorhersehbarkeit ist der Punkt"
-            right={<Toggle checked={config.random} onChange={(v) => void setConfig({ ...config, random: v })} />}
+            right={
+              <Toggle
+                checked={config.random}
+                onChange={(v) => void clearPlan().then(() => setConfig({ ...config, random: v }))}
+              />
+            }
           />
           <SettingRowUI
             title="An Traumzeichen gekoppelt"
             sub={
               topSign && topSign.n
-                ? `Extra-Check bei „${topSign.name}“ und deinen anderen Zeichen`
-                : 'Extra-Check, wenn eines im Alltag auftaucht'
+                ? `Ein Extra-Check am Tag nennt „${topSign.name}“ beim Namen`
+                : 'Ein Extra-Check am Tag, sobald du Traumzeichen gesammelt hast'
             }
-            right={<Toggle checked={config.signs} onChange={(v) => void setConfig({ ...config, signs: v })} />}
+            right={
+              <Toggle
+                checked={config.signs}
+                onChange={(v) => void clearPlan().then(() => setConfig({ ...config, signs: v }))}
+              />
+            }
           />
         </Card>
       </Scroll>
