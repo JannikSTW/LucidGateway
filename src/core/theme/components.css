@@ -1302,3 +1302,153 @@ details.fold .inner {
   border-radius: var(--r-md);
   display: block;
 }
+
+/* ---------- Krafttraining ---------- */
+.tplcard {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  padding: var(--sp-6);
+  margin-bottom: 11px;
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+  font-family: inherit;
+  color: inherit;
+  display: block;
+}
+.tplcard:active {
+  transform: scale(0.985);
+}
+.tplcard.dashed {
+  border-style: dashed;
+  background: none;
+}
+.tplcard b {
+  font-size: 15px;
+  display: block;
+  margin-bottom: 3px;
+}
+.tplcard span {
+  font-size: 11.5px;
+  color: var(--mist);
+  line-height: 1.5;
+}
+.tplcard.split {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.tplcard.split b {
+  margin: 0;
+}
+
+.exrow {
+  border-bottom: 1px solid var(--line);
+  padding: 13px 0;
+}
+.exrow:last-child {
+  border-bottom: none;
+}
+.exrow.skipped {
+  opacity: 0.4;
+}
+.exhead {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--sp-4);
+  margin-bottom: 9px;
+}
+.exhead b {
+  font-size: 14.5px;
+  display: block;
+  margin-bottom: 2px;
+}
+.exhead .target {
+  font-size: 11.5px;
+  color: var(--mist);
+}
+.exhead .last {
+  font-size: 11.5px;
+  color: var(--amber-fg);
+}
+.exskip {
+  background: none;
+  border: none;
+  color: var(--mist);
+  font-size: 16px;
+  cursor: pointer;
+  padding: 0 2px;
+  flex-shrink: 0;
+  line-height: 1;
+  font-family: inherit;
+}
+.exin {
+  display: grid;
+  grid-template-columns: 1fr 1fr 44px;
+  gap: var(--sp-3);
+}
+.exin input {
+  background: var(--panel2);
+  border: 1px solid var(--line);
+  border-radius: var(--r-sm);
+  color: var(--paper);
+  font-family: inherit;
+  font-size: 14.5px;
+  padding: var(--sp-4);
+  outline: none;
+  width: 100%;
+  text-align: center;
+}
+.exin input:focus {
+  border-color: var(--zone);
+}
+.exdone {
+  background: var(--panel2);
+  border: 1px solid var(--line);
+  border-radius: var(--r-sm);
+  color: var(--mist);
+  font-size: 15px;
+  cursor: pointer;
+  font-family: inherit;
+}
+.exdone.on {
+  background: var(--zone);
+  border-color: var(--zone);
+  color: var(--zone-on);
+}
+.tplrow {
+  display: grid;
+  grid-template-columns: 1fr 52px 66px 30px;
+  gap: 7px;
+  margin-bottom: var(--sp-3);
+}
+.tplrow input {
+  background: var(--panel2);
+  border: 1px solid var(--line);
+  border-radius: var(--r-sm);
+  color: var(--paper);
+  font-family: inherit;
+  font-size: 13.5px;
+  padding: 9px var(--sp-3);
+  outline: none;
+  width: 100%;
+}
+.tplrow .rm {
+  background: none;
+  border: none;
+  color: var(--mist);
+  font-size: 15px;
+  cursor: pointer;
+  font-family: inherit;
+}
+.tplhint {
+  font-size: 11px;
+  color: var(--mist);
+  display: grid;
+  grid-template-columns: 1fr 52px 66px 30px;
+  gap: 7px;
+  margin-bottom: var(--sp-2);
+  padding: 0 var(--sp-1);
+}

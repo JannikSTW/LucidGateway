@@ -3,6 +3,7 @@ import { registerInnerModule } from './inner/index'
 import { registerMindSparkModule } from './mindspark/index'
 import { registerObeModule } from './obe/index'
 import { registerProjectModule } from './project/index'
+import { registerTrainingModule } from './training/index'
 
 /**
  * Hier melden sich alle Module an. Das ist die einzige Stelle, die von einem
@@ -14,5 +15,6 @@ export function registerAllModules(): void {
   registerObeModule()
   registerInnerModule()
   registerMindSparkModule()
+  registerTrainingModule()
   registerProjectModule()
 }

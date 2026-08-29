@@ -110,7 +110,7 @@ Prototyp bereits formuliert und sollten übernommen werden.
 - [x] Phase 3 — Papier-Modus (auf dem Handy testen) — 29.08.2026, Kamera noch nicht am Gerät geprüft
 - [x] Phase 4 — OBE-Bereich — 29.08.2026
 - [x] Phase 5 — Innenwelt und IFS-Landkarte — 29.08.2026
-- [ ] Phase 6 — Trainingslog
+- [x] Phase 6 — Trainingslog — 29.08.2026
 - [ ] Phase 7 — Projekt: Umfeld, Termine, Klienten
 - [ ] Phase 8 — Ziele, Gedankenspeicher
 - [ ] Phase 9 — Reality Checks mit Push
