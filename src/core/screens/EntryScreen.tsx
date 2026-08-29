@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from 'react-router-dom'
-import { Button, Card, Empty, Text, Toolbar } from '../ui/basics'
+import { Card, Empty, Text, Toolbar } from '../ui/basics'
 import { Chip } from '../ui/inputs'
 import { Eyebrow, Screen, ScreenHeader, Scroll } from '../ui/layout'
 import { ScanStrip } from '../ui/Scans'
@@ -88,7 +88,7 @@ export function EntryScreen() {
 
         {entry.prof && <ProfileCard profile={entry.prof} color={cat.color} fill={cat.tint} />}
 
-        {cat.journal && cat.journal.showScale !== false && (
+        {cat.journal && cat.journal.showScale !== false ? (
           <Card>
             <Eyebrow>{cat.journal.scale.label}</Eyebrow>
             <b style={{ fontSize: 15 }}>
@@ -104,6 +104,19 @@ export function EntryScreen() {
               </div>
             )}
           </Card>
+        ) : (
+          entry.tags.length > 0 && (
+            <Card>
+              <Eyebrow>Marker</Eyebrow>
+              <div style={{ marginTop: 'var(--sp-2)' }}>
+                {entry.tags.map((t) => (
+                  <Chip key={t} on>
+                    {t}
+                  </Chip>
+                ))}
+              </div>
+            </Card>
+          )
         )}
 
         {entryViews('after').map(({ id: vid, Component }) => (
@@ -126,9 +139,6 @@ export function EntryScreen() {
             </button>
           </Toolbar>
         )}
-        <Button ghost onClick={() => navigate(`/kategorie/${cat.parent ?? cat.key}`)} style={{ marginTop: 'var(--sp-4)' }}>
-          Zur Kategorie
-        </Button>
       </Scroll>
     </Screen>
   )

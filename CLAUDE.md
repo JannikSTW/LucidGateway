@@ -105,7 +105,7 @@ Prototyp bereits formuliert und sollten übernommen werden.
 ## Aktueller Stand
 
 - [x] Phase 0 — Fundament (Setup, Theme, Nav, Dexie, Modul-Registry, Export, Deployment) — 29.08.2026
-- [ ] Phase 1 — Dashboard, Kategorien, Journal, Archiv, Bearbeiten/Löschen, Dialoge
+- [x] Phase 1 — Dashboard, Kategorien, Journal, Archiv, Bearbeiten/Löschen, Dialoge — 29.08.2026
 - [ ] Phase 2 — Zustandsprofil, Register, Traumwelt-Karte, Stützpunkt, Verknüpfungen
 - [ ] Phase 3 — Papier-Modus (auf dem Handy testen)
 - [ ] Phase 4 — OBE-Bereich
